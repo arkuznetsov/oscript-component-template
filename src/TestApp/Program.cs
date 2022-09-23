@@ -4,6 +4,8 @@
 // В проекте TestApp должны быть подключены NuGet пакеты OneScript и OneScript.Library
 
 using System;
+using System.IO;
+using System.Reflection;
 using ScriptEngine.HostedScript;
 using ScriptEngine.HostedScript.Library;
 
@@ -12,21 +14,7 @@ namespace TestApp
 	class MainClass : IHostApplication
 	{
 
-		static readonly string SCRIPT = @"// Отладочный скрипт
-// в котором уже подключена наша компонента
-Слагаемое1 = Новый ЭлементВычисления(5);
-Слагаемое2 = Новый ЭлементВычисления(Слагаемое1);
-
-Складыватель = Новый Вычисление;
-Складыватель.ДобавитьЭлемент(Слагаемое1);
-Складыватель.ДобавитьЭлемент(Слагаемое2);
-//Складыватель.ДобавитьЭлемент('20150601');
-
-Сумма = Складыватель.Вычислить();
-
-Сообщить(""Получилось: "" + Сумма);
-"
-			;
+		static readonly string SCRIPT = GetStringFromResource("TestApp.Resourses.testScript.os");
 
 		public static HostedScriptEngine StartEngine()
 		{
@@ -74,6 +62,22 @@ namespace TestApp
 		public string[] GetCommandLineArguments()
 		{
 			return new string[] { "1", "2", "3" }; // Здесь можно зашить список аргументов командной строки
+		}
+
+		static private string GetStringFromResource(string resourceName)
+		{
+			var asm = Assembly.GetExecutingAssembly();
+			string codeSource;
+
+			using (Stream s = asm.GetManifestResourceStream(resourceName))
+			{
+				using (StreamReader r = new StreamReader(s))
+				{
+					codeSource = r.ReadToEnd();
+				}
+			}
+
+			return codeSource;
 		}
 	}
 }
