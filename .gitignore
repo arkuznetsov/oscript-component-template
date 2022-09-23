@@ -21,8 +21,14 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+[Tt]ools/nuget.exe
+[Tt]ools/test
+[Tt]ools/NUnit.ConsoleRunner*
+[Bb]uild/[Bb]in/
+[Bb]uild/[Rr]eports/
 
 .vs/
+.vscode/
 
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
@@ -33,3 +39,6 @@ TestResult.xml
 TestApp.exe.config
 
 [Pp]ackages/
+
+*.ospx
+map.json
