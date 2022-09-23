@@ -64,6 +64,10 @@ jobs:
           regex: '.Версия\("((?:\d+\.)+\d+)"\)'
         id: extract_version
 
+      # Восстановление зависимостей
+      - name: Восстановление зависимостей
+        run: dotnet restore ./src
+
       # Начало анализа проекта в SonarQube (ветка)
       - name: Начало анализа проекта в SonarQube (branch)
         if: github.event_name == 'push'
@@ -96,9 +100,7 @@ jobs:
 
       # Сборка компоненты для тестирования
       - name: Сборка компоненты для тестирования
-        run: |
-          dotnet restore ./src
-          dotnet build ./src --configuration Debug
+        run: dotnet build ./src --configuration Debug
 
       # Запуск тестов NUnit3
       - name: Запуск тестов NUnit3 и сборка покрытия
