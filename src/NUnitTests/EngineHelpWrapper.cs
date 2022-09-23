@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using NUnit.Framework;
 using ScriptEngine.Machine.Contexts;
 using ScriptEngine.HostedScript.Library;
 using ScriptEngine.Machine;
@@ -127,7 +126,7 @@ namespace NUnitTests
 			return new string[] { };
 		}
 
-		public bool InputString(out string result, int maxLen)
+		public bool InputString(out string result, string prompt, int maxLen, bool multiline)
 		{
 			result = "";
 			return false;

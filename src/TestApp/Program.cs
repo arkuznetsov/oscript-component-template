@@ -22,11 +22,8 @@ namespace TestApp
 			engine.Initialize();
 
 			// Тут можно указать любой класс из компоненты
-			engine.AttachAssembly(System.Reflection.Assembly.GetAssembly(typeof(oscriptcomponent.MyClass)));
-
 			// Если проектов компонент несколько, то надо взять по классу из каждой из них
-			// engine.AttachAssembly(System.Reflection.Assembly.GetAssembly(typeof(oscriptcomponent_2.MyClass_2)));
-			// engine.AttachAssembly(System.Reflection.Assembly.GetAssembly(typeof(oscriptcomponent_3.MyClass_3)));
+			engine.AttachAssembly(System.Reflection.Assembly.GetAssembly(typeof(oscriptcomponent.MyClass)));
 
 			return engine;
 		}
@@ -54,7 +51,7 @@ namespace TestApp
 			Console.WriteLine(exc.ToString());
 		}
 
-		public bool InputString(out string result, int maxLen)
+        public bool InputString(out string result, string prompt, int maxLen, bool multiline)
 		{
 			throw new NotImplementedException();
 		}
