@@ -9,6 +9,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resourses\testScript.os" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\oscript-component\oscript-component.csproj">
       <Project>{EA173D06-CCD2-45D5-A263-DC866289517A}</Project>
       <Name>oscript-component</Name>
