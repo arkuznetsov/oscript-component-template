@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using oscriptcomponent;
+using System.Collections.Generic;
+using ScriptEngine.HostedScript.Library;
 
 // Используется NUnit 3.6
 
@@ -9,16 +11,36 @@ namespace NUnitTests
 	public class MainTestClass
 	{
 
-		private EngineHelpWrapper host;
+		private EngineHelpWrapper _host;
 
+		public static List<TestCaseData> TestCases
+		{
+			get
+			{
+				var testCases = new List<TestCaseData>();
+				EngineHelpWrapper _host = new EngineHelpWrapper();
+				_host.StartEngine();
+
+				ArrayImpl testMethods =_host.GetTestMethods("NUnitTests.Tests.external.os");
+
+				foreach (var ivTestMethod in testMethods)
+				{
+					testCases.Add(new TestCaseData(ivTestMethod.ToString()));
+				}
+
+				return testCases;
+			}
+		}
+		
 		[OneTimeSetUp]
 		public void Initialize()
 		{
-			host = new EngineHelpWrapper();
-			host.StartEngine();
+			_host = new EngineHelpWrapper();
+			_host.StartEngine();
 		}
 
 		[Test]
+		[Category("Test internal object")]
 		public void TestAsInternalObjects()
 		{
 			var item1 = new CalcItem(1);
@@ -38,6 +60,7 @@ namespace NUnitTests
 		}
 
 		[Test]
+		[Category("Test internal collection")]
 		public void TestAsInternalCollection()
 		{
 			var item1 = new CalcItem(1);
@@ -53,11 +76,30 @@ namespace NUnitTests
 				// этот цикл не скомпилируется
 			}
 		}
-
-		[Test]
-		public void TestAsExternalObjects()
+	
+		[TestCaseSource(nameof(TestCases))]
+		[Category("OneScript tests")]
+		public void TestAsExternalObjects(string testCase)
 		{
-			host.RunTestScript("NUnitTests.Tests.external.os");
+			string testException;
+
+			int result = _host.RunTestMethod("NUnitTests.Tests.external.os", testCase, out testException);
+			
+			switch (result)
+			{
+				case -1:
+					Assert.Ignore("Тест: {0} не реализован!", testCase);
+					break;
+				case 0:
+					Assert.Pass();
+					break;
+				case 1:
+					Assert.Fail("Тест: {0} провален с сообщением: {1}", testCase, testException);
+					break;
+				default:
+					Assert.Inconclusive("Тест: {0} вернул неожиданный результат: {1}", testCase, result);
+					break;
+			}
 		}
 	}
 }
