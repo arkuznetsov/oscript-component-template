@@ -37,6 +37,12 @@ jobs:
           # Disabling shadow clone is recomended
           fetch-depth: 0
 
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: 'temurin'
+      
       # Установка NUnit3
       - name: Установка NUnit3
         shell: pwsh
